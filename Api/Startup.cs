@@ -27,6 +27,8 @@ namespace Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<ICommunityRepository>(x => new CommunityRepository(Configuration.GetConnectionString("Default")));
+            services.AddTransient<IMedicalCenterRepository>(x => new MedicalCenterRepository(Configuration.GetConnectionString("Default")));
+            services.AddTransient<ITravelerRepository>(x => new TravelerRepository(Configuration.GetConnectionString("Default")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

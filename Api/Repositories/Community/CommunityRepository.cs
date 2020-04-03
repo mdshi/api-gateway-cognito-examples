@@ -69,7 +69,7 @@ namespace Api
                 var parameters = new DynamicParameters();
                 if (existingEntity.FirstName != entityToUpdate.FirstName)
                 {
-                    sql += "FirstName=@FirstFirstName,";
+                    sql += "FirstName=@FirstFirstName,LastName=@LastName";
                     parameters.Add("@FirstFirstName", entityToUpdate.FirstName, DbType.String);
                 }
 

@@ -11,7 +11,7 @@ public partial class MedicalCenter
     public string Nationality { get; set; }
     public string Email { get; set; }
     public string Sex { get; set; }
-    public long? Age { get; set; }
+    public long Age { get; set; }
     public string Region { get; set; }
     public string Subcity { get; set; }
     public string Zone { get; set; }
