@@ -16,7 +16,7 @@ namespace Api
         {
             using (var conn = GetOpenConnection())
             {
-                var sql = "DELETE FROM Co Community WHERE Id = @Id";
+                var sql = "DELETE FROM Communities WHERE Id = @Id";
                 var parameters = new DynamicParameters();
                 parameters.Add("@Id", id, System.Data.DbType.Int32);
                 await conn.QueryFirstOrDefaultAsync<Community>(sql, parameters);
@@ -27,16 +27,16 @@ namespace Api
         {
             using (var conn = GetOpenConnection())
             {
-                var sql = "SELECT * FROM Community";
+                var sql = "SELECT * FROM Communities";
                 return await conn.QueryAsync<Community>(sql);
-            }
+            }Community
         }
 
         public override async Task<Community> FindAsync(int id)
         {
             using (var conn = GetOpenConnection())
             {
-                var sql = "SELECT * FROM Community WHERE Id = @Id";
+                var sql = "SELECT * FROM Communities WHERE Id = @Id";
                 var parameters = new DynamicParameters();
                 parameters.Add("@Id", id, System.Data.DbType.Int32);
                 return await conn.QueryFirstOrDefaultAsync<Community>(sql, parameters);
@@ -47,11 +47,11 @@ namespace Api
         {
             using (var conn = GetOpenConnection())
             {
-                var sql = "INSERT INTO Employee(FirstName)"
+                var sql = "INSERT INTO Communities(FirstName)"
                     + "VALUES(@FirstName)";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("@FFirstName", entity.FirstName, System.Data.DbType.String);
+                parameters.Add("@FirstName", entity.FirstName, System.Data.DbType.String);
 
                 await conn.QueryAsync(sql, parameters);
             }
@@ -63,7 +63,7 @@ namespace Api
             {
                 var existingEntity = await FindAsync(entityToUpdate.Id);
 
-                var sql = "UPDATE Community "
+                var sql = "UPDATE Communities "
                     + "SET ";
 
                 var parameters = new DynamicParameters();
