@@ -8,9 +8,9 @@ using DataAccessLayer;
 
 namespace Api
 {
-    public class CommunityRepository : SqlRepository<Community>, ICommunityRepository
+    public class MedicalRepository : SqlRepository<Community>, IMedicalCenterRepository
     {
-        public CommunityRepository(string connectionString) : base(connectionString) { }
+        public MedicalRepository (string connectionString) : base(connectionString) { }
 
         public override async void DeleteAsync(int id)
         {
@@ -29,7 +29,7 @@ namespace Api
             {
                 var sql = "SELECT * FROM Communities";
                 return await conn.QueryAsync<Community>(sql);
-            }Community
+            }
         }
 
         public override async Task<Community> FindAsync(int id)
@@ -76,7 +76,7 @@ namespace Api
                 sql = sql.TrimEnd(',');
 
                 sql += " WHERE Id=@Id";
-                parameters.Add("@Id", entityToUpdate.Id, DbType.Int32);
+                parameters.Add("@Id", entityToUpdate.MedicalID, DbType.Int32);
 
                 await conn.QueryAsync(sql, parameters);
             }

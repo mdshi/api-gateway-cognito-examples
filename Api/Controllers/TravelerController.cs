@@ -7,11 +7,11 @@ namespace Api.Controllers
     [Produces("application/json")]
     [Route("api/travelers")]
    // [ApiController]
-    public class CommunityController : ControllerBase
+    public class TravelerControler : ControllerBase
     {
-        private ICommunityRepository _communityRepo;
+        private ITravelerRepository _communityRepo;
 
-        public CommunityController(ICommunityRepository communityRepo)
+        public TravelerControler(ICommunityRepository communityRepo)
         {
             _communityRepo = communityRepo;
         }

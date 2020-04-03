@@ -29,7 +29,7 @@ namespace Api
             {
                 var sql = "SELECT * FROM Communities";
                 return await conn.QueryAsync<Community>(sql);
-            }Community
+            }
         }
 
         public override async Task<Community> FindAsync(int id)
@@ -61,7 +61,7 @@ namespace Api
         {
             using (var conn = GetOpenConnection())
             {
-                var existingEntity = await FindAsync(entityToUpdate.Id);
+                var existingEntity = await FindAsync(entityToUpdate.CommunityID);
 
                 var sql = "UPDATE Communities "
                     + "SET ";
@@ -76,7 +76,7 @@ namespace Api
                 sql = sql.TrimEnd(',');
 
                 sql += " WHERE Id=@Id";
-                parameters.Add("@Id", entityToUpdate.Id, DbType.Int32);
+                parameters.Add("@Id", entityToUpdate.CommunityID, DbType.Int32);
 
                 await conn.QueryAsync(sql, parameters);
             }
@@ -85,6 +85,21 @@ namespace Api
         public Task<bool> MyCustomRepositoryMethodExampleAsync()
         {
             throw new NotImplementedException();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
         }
     }
 }
