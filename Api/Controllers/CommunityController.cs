@@ -3,10 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
-  //  [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     [Produces("application/json")]
-    [Route("api/communities")]
-   // [ApiController]
+    [Route("api/v1/communities")]
     public class CommunityController : ControllerBase
     {
         private ICommunityRepository _communityRepo;
@@ -24,10 +23,10 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Community community)
+        public IActionResult Create([FromBody] Community community)
         {
             _communityRepo.InsertAsync(community);
-            return Ok();
+            return Ok(community);
         }
 
         [HttpPut("{id}")]

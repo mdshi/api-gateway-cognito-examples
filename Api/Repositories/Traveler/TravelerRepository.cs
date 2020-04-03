@@ -10,7 +10,7 @@ namespace Api
 {
     public class TravelerRepository : SqlRepository<Traveler>, ITravelerRepository
     {
-        private const string delete = "DELETE FROM Communities WHERE TravelerID = @TravelerID";
+        private const string delete = "DELETE FROM Travelers WHERE TravelerID = @TravelerID";
 
         public TravelerRepository(string connectionString) : base(connectionString) { }
 
@@ -49,7 +49,7 @@ namespace Api
         {
             using (var conn = GetOpenConnection())
             {
-                var sql = "INSERT INTO Communities(FirstName)"
+                var sql = "INSERT INTO Travelers(FirstName)"
                     + "VALUES(@FirstName)";
 
                 var parameters = new DynamicParameters();
@@ -65,7 +65,7 @@ namespace Api
             {
                 var existingEntity = await FindAsync(entityToUpdate.TravelerID);
 
-                var sql = "UPDATE Communities "
+                var sql = "UPDATE Travelers "
                     + "SET ";
 
                 var parameters = new DynamicParameters();

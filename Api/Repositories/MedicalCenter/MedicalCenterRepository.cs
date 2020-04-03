@@ -16,7 +16,7 @@ namespace Api
         {
             using (var conn = GetOpenConnection())
             {
-                var sql = "DELETE FROM Communities WHERE MedicalID = @MedicalID";
+                var sql = "DELETE FROM MedicalCenters WHERE MedicalID = @MedicalID";
                 var parameters = new DynamicParameters();
                 parameters.Add("@MedicalID", MedicalID, System.Data.DbType.Int32);
                 await conn.QueryFirstOrDefaultAsync<MedicalCenter>(sql, parameters);
@@ -27,7 +27,7 @@ namespace Api
         {
             using (var conn = GetOpenConnection())
             {
-                var sql = "SELECT * FROM MedicalCenter";
+                var sql = "SELECT * FROM MedicalCenters";
                 return await conn.QueryAsync<MedicalCenter>(sql);
             }
         }
@@ -36,7 +36,7 @@ namespace Api
         {
             using (var conn = GetOpenConnection())
             {
-                var sql = "SELECT * FROM MedicalCenter WHERE MedicalID = @MedicalID";
+                var sql = "SELECT * FROM MedicalCenters WHERE MedicalID = @MedicalID";
                 var parameters = new DynamicParameters();
                 parameters.Add("@MedicalID", id, System.Data.DbType.Int32);
                 return await conn.QueryFirstOrDefaultAsync<MedicalCenter>(sql, parameters);
@@ -47,7 +47,7 @@ namespace Api
         {
             using (var conn = GetOpenConnection())
             {
-                var sql = "INSERT INTO MedicalCenter(FirstName)"
+                var sql = "INSERT INTO MedicalCenters(FirstName)"
                     + "VALUES(@FirstName)";
 
                 var parameters = new DynamicParameters();
@@ -63,7 +63,7 @@ namespace Api
             {
                 var existingEntity = await FindAsync(entityToUpdate.MedicalID);
 
-                var sql = "UPDATE MedicalCenter "
+                var sql = "UPDATE MedicalCenters "
                     + "SET ";
 
                 var parameters = new DynamicParameters();
