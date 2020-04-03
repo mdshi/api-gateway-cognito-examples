@@ -16,9 +16,9 @@ namespace Api
         {
             using (var conn = GetOpenConnection())
             {
-                var sql = "DELETE FROM Communities WHERE Id = @Id";
+                var sql = "DELETE FROM Communities WHERE CommunityID = @CommunityID";
                 var parameters = new DynamicParameters();
-                parameters.Add("@Id", id, System.Data.DbType.Int32);
+                parameters.Add("@CommunityID", id, System.Data.DbType.Int32);
                 await conn.QueryFirstOrDefaultAsync<Community>(sql, parameters);
             }
         }
@@ -36,9 +36,9 @@ namespace Api
         {
             using (var conn = GetOpenConnection())
             {
-                var sql = "SELECT * FROM Communities WHERE Id = @Id";
+                var sql = "SELECT * FROM Communities WHERE CommunityID = @CommunityID";
                 var parameters = new DynamicParameters();
-                parameters.Add("@Id", id, System.Data.DbType.Int32);
+                parameters.Add("@CommunityID", id, System.Data.DbType.Int32);
                 return await conn.QueryFirstOrDefaultAsync<Community>(sql, parameters);
             }
         }
@@ -75,8 +75,8 @@ namespace Api
 
                 sql = sql.TrimEnd(',');
 
-                sql += " WHERE Id=@Id";
-                parameters.Add("@Id", entityToUpdate.CommunityID, DbType.Int32);
+                sql += " WHERE CommunityID=@CommunityID";
+                parameters.Add("@CommunityID", entityToUpdate.CommunityID, DbType.Int32);
 
                 await conn.QueryAsync(sql, parameters);
             }

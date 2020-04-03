@@ -9,38 +9,38 @@ namespace Api.Controllers
    // [ApiController]
     public class TravelerControler : ControllerBase
     {
-        private ITravelerRepository _communityRepo;
+        private ITravelerRepository _travelerRepo;
 
-        public TravelerControler(ICommunityRepository communityRepo)
+        public TravelerControler(ITravelerRepository travelerRepo)
         {
-            _communityRepo = communityRepo;
+            _travelerRepo = travelerRepo;
         }
 
         [HttpGet]
         public async Task<string> Get()
         {
-            var community = await _communityRepo.GetAllAsync();
+            var community = await _travelerRepo.GetAllAsync();
             return Newtonsoft.Json.JsonConvert.SerializeObject(community);
         }
 
         [HttpPost]
-        public IActionResult Create(Community community)
+        public IActionResult Create(Traveler traveler)
         {
-            _communityRepo.InsertAsync(community);
+            _travelerRepo.InsertAsync(traveler);
             return Ok();
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, Community community)
+        public IActionResult Update(int id, Traveler traveler)
         {
-            _communityRepo.UpdateAsync(community);
+            _travelerRepo.UpdateAsync(traveler);
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int travelerID)
         {
-            _communityRepo.DeleteAsync(id);
+            _travelerRepo.DeleteAsync(travelerID);
             return Ok();
         }
     }

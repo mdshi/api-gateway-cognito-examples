@@ -8,46 +8,46 @@ using DataAccessLayer;
 
 namespace Api
 {
-    public class MedicalRepository : SqlRepository<Community>, IMedicalCenterRepository
+    public class MedicalCenterRepository : SqlRepository<MedicalCenter>, IMedicalCenterRepository
     {
-        public MedicalRepository (string connectionString) : base(connectionString) { }
+        public MedicalCenterRepository (string connectionString) : base(connectionString) { }
 
-        public override async void DeleteAsync(int id)
+        public override async void DeleteAsync(int MedicalID)
         {
             using (var conn = GetOpenConnection())
             {
-                var sql = "DELETE FROM Communities WHERE Id = @Id";
+                var sql = "DELETE FROM Communities WHERE MedicalID = @MedicalID";
                 var parameters = new DynamicParameters();
-                parameters.Add("@Id", id, System.Data.DbType.Int32);
-                await conn.QueryFirstOrDefaultAsync<Community>(sql, parameters);
+                parameters.Add("@MedicalID", MedicalID, System.Data.DbType.Int32);
+                await conn.QueryFirstOrDefaultAsync<MedicalCenter>(sql, parameters);
             }
         }
 
-        public override async Task<IEnumerable<Community>> GetAllAsync()
+        public override async Task<IEnumerable<MedicalCenter>> GetAllAsync()
         {
             using (var conn = GetOpenConnection())
             {
-                var sql = "SELECT * FROM Communities";
-                return await conn.QueryAsync<Community>(sql);
+                var sql = "SELECT * FROM MedicalCenter";
+                return await conn.QueryAsync<MedicalCenter>(sql);
             }
         }
 
-        public override async Task<Community> FindAsync(int id)
+        public override async Task<MedicalCenter> FindAsync(int id)
         {
             using (var conn = GetOpenConnection())
             {
-                var sql = "SELECT * FROM Communities WHERE Id = @Id";
+                var sql = "SELECT * FROM MedicalCenter WHERE MedicalID = @MedicalID";
                 var parameters = new DynamicParameters();
-                parameters.Add("@Id", id, System.Data.DbType.Int32);
-                return await conn.QueryFirstOrDefaultAsync<Community>(sql, parameters);
+                parameters.Add("@MedicalID", id, System.Data.DbType.Int32);
+                return await conn.QueryFirstOrDefaultAsync<MedicalCenter>(sql, parameters);
             }
         }
 
-        public override async void InsertAsync(Community entity)
+        public override async void InsertAsync(MedicalCenter entity)
         {
             using (var conn = GetOpenConnection())
             {
-                var sql = "INSERT INTO Communities(FirstName)"
+                var sql = "INSERT INTO MedicalCenter(FirstName)"
                     + "VALUES(@FirstName)";
 
                 var parameters = new DynamicParameters();
@@ -57,13 +57,13 @@ namespace Api
             }
         }
 
-        public override async void UpdateAsync(Community entityToUpdate)
+        public override async void UpdateAsync(MedicalCenter entityToUpdate)
         {
             using (var conn = GetOpenConnection())
             {
-                var existingEntity = await FindAsync(entityToUpdate.Id);
+                var existingEntity = await FindAsync(entityToUpdate.MedicalID);
 
-                var sql = "UPDATE Communities "
+                var sql = "UPDATE MedicalCenter "
                     + "SET ";
 
                 var parameters = new DynamicParameters();
@@ -75,8 +75,8 @@ namespace Api
 
                 sql = sql.TrimEnd(',');
 
-                sql += " WHERE Id=@Id";
-                parameters.Add("@Id", entityToUpdate.MedicalID, DbType.Int32);
+                sql += " WHERE MedicalID=@MedicalID";
+                parameters.Add("@MedicalID", entityToUpdate.MedicalID, DbType.Int32);
 
                 await conn.QueryAsync(sql, parameters);
             }
@@ -85,6 +85,21 @@ namespace Api
         public Task<bool> MyCustomRepositoryMethodExampleAsync()
         {
             throw new NotImplementedException();
+        }
+
+               public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
         }
     }
 }

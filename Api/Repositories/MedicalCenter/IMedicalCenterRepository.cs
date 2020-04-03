@@ -6,7 +6,7 @@ using DataAccessLayer;
 
 namespace Api
 {
-    public interface IMedicalCenterRepository : IGenericRepository<Community>
+    public interface IMedicalCenterRepository : IGenericRepository<MedicalCenter>
     {
         Task<bool> MyCustomRepositoryMethodExampleAsync();
     }

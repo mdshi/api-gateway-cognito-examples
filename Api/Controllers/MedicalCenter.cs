@@ -3,15 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
-  //  [Route("api/[controller]")]
+  //[Route("api/[controller]")]
     [Produces("application/json")]
     [Route("api/medicalcenters")]
-   // [ApiController]
+  //[ApiController]
     public class MedicalCenterController : ControllerBase
     {
         private IMedicalCenterRepository _medicalRepo;
 
-        public CommunityController(IMedicalCenterRepository medicalRepo)
+        public MedicalCenterController(IMedicalCenterRepository medicalRepo)
         {
             _medicalRepo = medicalRepo;
         }
@@ -26,14 +26,14 @@ namespace Api.Controllers
         [HttpPost]
         public IActionResult Create(MedicalCenter medical)
         {
-            _medicalRepo.InsertAsync(community);
+            _medicalRepo.InsertAsync(medical);
             return Ok();
         }
 
         [HttpPut("{id}")]
         public IActionResult Update(int id, MedicalCenter medical)
         {
-            _medicalRepo.UpdateAsync(community);
+            _medicalRepo.UpdateAsync(medical);
             return Ok();
         }
 
