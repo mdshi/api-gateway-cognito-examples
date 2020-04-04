@@ -6,6 +6,7 @@ namespace Api.Controllers
     //[Route("api/[controller]")]
     [Produces("application/json")]
     [Route("api/v1/communities")]
+    [ApiController]
     public class CommunityController : ControllerBase
     {
         private ICommunityRepository _communityRepo;
@@ -15,32 +16,11 @@ namespace Api.Controllers
             _communityRepo = communityRepo;
         }
 
-        [HttpGet]
-        public async Task<string> Get()
-        {
-            var community = await _communityRepo.GetAllAsync();
-            return Newtonsoft.Json.JsonConvert.SerializeObject(community);
-        }
-
         [HttpPost]
-        public IActionResult Create([FromBody] Community community)
+        public ActionResult Create([FromBody] Community entity)
         {
-            _communityRepo.InsertAsync(community);
-            return Ok(community);
-        }
-
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, Community community)
-        {
-            _communityRepo.UpdateAsync(community);
-            return Ok();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            _communityRepo.DeleteAsync(id);
-            return Ok();
+            _communityRepo.Create(entity);
+            return Ok(entity);
         }
     }
 }

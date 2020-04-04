@@ -4,82 +4,29 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
-using DataAccessLayer;
 
 namespace Api
 {
-    public class MedicalCenterRepository : SqlRepository<MedicalCenter>, IMedicalCenterRepository
+    public class MedicalCenterRepository : IMedicalCenterRepository
     {
-        public MedicalCenterRepository (string connectionString) : base(connectionString) { }
-
-        public override async void DeleteAsync(int MedicalID)
+        public void Create(Community entity)
         {
-            using (var conn = GetOpenConnection())
-            {
-                var sql = "DELETE FROM MedicalCenters WHERE MedicalID = @MedicalID";
-                var parameters = new DynamicParameters();
-                parameters.Add("@MedicalID", MedicalID, System.Data.DbType.Int32);
-                await conn.QueryFirstOrDefaultAsync<MedicalCenter>(sql, parameters);
-            }
+            throw new NotImplementedException();
         }
 
-        public override async Task<IEnumerable<MedicalCenter>> GetAllAsync()
+        public void Delete(int id)
         {
-            using (var conn = GetOpenConnection())
-            {
-                var sql = "SELECT * FROM MedicalCenters";
-                return await conn.QueryAsync<MedicalCenter>(sql);
-            }
+            throw new NotImplementedException();
         }
 
-        public override async Task<MedicalCenter> FindAsync(int id)
+        public List<Community> GetAll()
         {
-            using (var conn = GetOpenConnection())
-            {
-                var sql = "SELECT * FROM MedicalCenters WHERE MedicalID = @MedicalID";
-                var parameters = new DynamicParameters();
-                parameters.Add("@MedicalID", id, System.Data.DbType.Int32);
-                return await conn.QueryFirstOrDefaultAsync<MedicalCenter>(sql, parameters);
-            }
+            throw new NotImplementedException();
         }
 
-        public override async void InsertAsync(MedicalCenter entity)
+        public Community GetById(int id)
         {
-            using (var conn = GetOpenConnection())
-            {
-                var sql = "INSERT INTO MedicalCenters(FirstName)"
-                    + "VALUES(@FirstName)";
-
-                var parameters = new DynamicParameters();
-                parameters.Add("@FirstName", entity.FirstName, System.Data.DbType.String);
-
-                await conn.QueryAsync(sql, parameters);
-            }
-        }
-
-        public override async void UpdateAsync(MedicalCenter entityToUpdate)
-        {
-            using (var conn = GetOpenConnection())
-            {
-                var existingEntity = await FindAsync(entityToUpdate.MedicalID);
-
-                var sql = "UPDATE MedicalCenters "
-                    + "SET ";
-
-                var parameters = new DynamicParameters();
-                if (existingEntity.FirstName != entityToUpdate.FirstName)
-                {
-                    sql += "FirstName=@FirstFirstName,";
-                    parameters.Add("@FirstFirstName", entityToUpdate.FirstName, DbType.String);
-                }
-
-                sql = sql.TrimEnd(',');
-
-                sql += " WHERE MedicalID=@MedicalID";
-                parameters.Add("@MedicalID", entityToUpdate.MedicalID, DbType.Int32);
-
-                await conn.QueryAsync(sql, parameters);
-            }
+            throw new NotImplementedException();
         }
 
         public Task<bool> MyCustomRepositoryMethodExampleAsync()
@@ -87,19 +34,9 @@ namespace Api
             throw new NotImplementedException();
         }
 
-               public override bool Equals(object obj)
+        public void Update(Community entity, int id)
         {
-            return base.Equals(obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
-        public override string ToString()
-        {
-            return base.ToString();
+            throw new NotImplementedException();
         }
     }
 }

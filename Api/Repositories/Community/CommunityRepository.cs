@@ -1,136 +1,83 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Api.UnitOfWork;
+using Api.UnitOfWork.commands;
 using Dapper;
-using DataAccessLayer;
+using Microsoft.Extensions.Configuration;
 
 namespace Api
 {
-    public class CommunityRepository : SqlRepository<Community>, ICommunityRepository
+    public class CommunityRepository : ICommunityRepository
     {
-        public CommunityRepository(string connectionString) : base(connectionString) { }
 
-        public override async void DeleteAsync(int id)
+        private readonly IConfiguration _configuration;
+        private readonly string _connectionStr;
+        private readonly IWorker _worker;
+        private readonly ICommandLine _commandLine;
+
+        public CommunityRepository(IConfiguration configururation, IWorker worker, ICommandLine commandLine)
         {
-            using (var conn = GetOpenConnection())
-            {
-                var sql = "DELETE FROM Communities WHERE CommunityID = @CommunityID";
-                var parameters = new DynamicParameters();
-                parameters.Add("@CommunityID", id, System.Data.DbType.Int32);
-                await conn.QueryFirstOrDefaultAsync<Community>(sql, parameters);
-            }
+            _configuration = configururation;
+            _worker = worker;
+            _commandLine = commandLine;
+            _connectionStr = _configuration.GetConnectionString("Default");
         }
-
-        public override async Task<IEnumerable<Community>> GetAllAsync()
+        public void Create(Community entity)
         {
-            using (var conn = GetOpenConnection())
-            {
-                var sql = "SELECT * FROM Communities";
-                return await conn.QueryAsync<Community>(sql);
-            }
-        }
-
-        public override async Task<Community> FindAsync(int id)
-        {
-            using (var conn = GetOpenConnection())
-            {
-                var sql = "SELECT * FROM Communities WHERE CommunityID = @CommunityID";
-                var parameters = new DynamicParameters();
-                parameters.Add("@CommunityID", id, System.Data.DbType.Int32);
-                return await conn.QueryFirstOrDefaultAsync<Community>(sql, parameters);
-            }
-        }
-
-        public override async void InsertAsync(Community entity)
-        {
-            using (var conn = GetOpenConnection())
-            {
-                var sql = "INSERT INTO Communities(FirstName, LastName, Age, Sex, Language, Region, SubcityOrZone, Sefer, " +
-                    "Woreda, Kebele, Occupation, HouseNo, PhoneNo, Latitude, Longitude, Fever, Cough, HasSob, FormStatus, TravleHx," +
-                    "HaveSex, AnimalMarket, HealthFacility, CommunityOccupation)"
-                    + "VALUES(@FirstName, @LastName,@Age, @Sex, @Language, @Region, @SubcityOrZone, @Sefer, @Woreda, @Kebele,"
-                    + "@Occupation, @HouseNo, @PhoneNo, @Latitude, @Longitude, @Fever, @Cough, @HasSob, @FormStatus, @TravleHx, @HaveSex, "
-                    + "@AnimalMarket, @HealthFacility, @CommunityOccupation)";
-                //Community enitity = new Community();
-                var parameters = GetParameters();
-                parameters.Add("@FirstName", entity.FirstName, DbType.String);
-                parameters.Add("@LastName", entity.LastName, DbType.String);
-                parameters.Add("@Age", entity.Age, DbType.Int64);
-                parameters.Add("@Sex", entity.Sex, DbType.String);
-                parameters.Add("@Language", entity.Language, DbType.String);
-                parameters.Add("@Region", entity.Region, DbType.String);
-                parameters.Add("@SubcityOrZone", entity.SubcityOrZone, DbType.String);
-                parameters.Add("@Sefer", entity.Sefer, DbType.String);
-                parameters.Add("@Woreda", entity.Woreda, DbType.String);
-                parameters.Add("@Kebele", entity.Kebele, DbType.String);
-                parameters.Add("@Occupation", entity.Occupation, DbType.String);
-                parameters.Add("@HouseNo", entity.HouseNo, DbType.String);
-                parameters.Add("@PhoneNo", entity.PhoneNo, DbType.Int64);
-                parameters.Add("@Latitude", entity.Latitude, DbType.String);
-                parameters.Add("@Longitude", entity.Longitude, DbType.String);
-                parameters.Add("@Fever", entity.Fever, DbType.Boolean);
-                parameters.Add("@Cough", entity.Cough, DbType.Boolean);
-                parameters.Add("@HasSob", entity.HasSob, DbType.Boolean);
-                parameters.Add("@FormStatus", entity.FormStatus, DbType.String);
-                parameters.Add("@TravleHx", entity.TravleHx, DbType.Boolean);
-                parameters.Add("@HaveSex", entity.HaveSex, DbType.Boolean);
-                parameters.Add("@AnimalMarket", entity.AnimalMarket, DbType.Boolean);
-                parameters.Add("@HealthFacility", entity.HealthFacility, DbType.Boolean);
-                parameters.Add("@CommunityOccupation", entity.CommunityOccupation, DbType.String);
-                await conn.QueryFirstAsync(sql, parameters);
-            }
-        }
-
-        private static DynamicParameters GetParameters()
-        {
-            return new DynamicParameters();
-        }
-
-        public override async void UpdateAsync(Community entityToUpdate)
-        {
-            using (var conn = GetOpenConnection())
-            {
-                var existingEntity = await FindAsync(entityToUpdate.CommunityID);
-
-                var sql = "UPDATE Communities "
-                    + "SET ";
-
-                var parameters = new DynamicParameters();
-                if (existingEntity.FirstName != entityToUpdate.FirstName)
+            _worker.ExecuteCommand(_connectionStr, conn => {
+            var query = conn.Query<Community>(_commandLine.AddCommunity,
+                new
                 {
-                    sql += "FirstName=@FirstFirstName,LastName=@LastName";
-                    parameters.Add("@FirstFirstName", entityToUpdate.FirstName, DbType.String);
-                }
-
-                sql = sql.TrimEnd(',');
-
-                sql += " WHERE CommunityID=@CommunityID";
-                parameters.Add("@CommunityID", entityToUpdate.CommunityID, DbType.Int32);
-
-                await conn.QueryAsync(sql, parameters);
-            }
+                    FirstName = entity.FirstName,
+                    LastName = entity.LastName,
+                    Age = entity.Age,
+                    Sex = entity.Sex,
+                    Language = entity.Language,
+                    Region = entity.Region,
+                    SubcityOrZone = entity.SubcityOrZone,
+                    Sefer = entity.Sefer,
+                    Woreda = entity.Woreda,
+                    Kebele = entity.Kebele,
+                    Occupation = entity.Occupation,
+                    HouseNo = entity.HouseNo,
+                    PhoneNo = entity.PhoneNo,
+                    Latitude = entity.Latitude,
+                    Longitude = entity.Longitude,
+                    Fever = entity.Fever,
+                    Cough = entity.Cough,
+                    HasSob = entity.HasSob,
+                    FormStatus = entity.FormStatus,
+                    TravleHx = entity.TravleHx,  // This's a typo 
+                    HaveSex = entity.HaveSex,  // Interesting choice of word 
+                    AnimalMarket = entity.AnimalMarket,
+                    HealthFacility = entity.HealthFacility,
+                    CommunityOccupation = entity.CommunityOccupation  // I would rather say 'Staff' or 'Employee' or 'CollectedBy'
+                });
+            });
         }
 
-        public Task<bool> MyCustomRepositoryMethodExampleAsync()
+        public void Delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        public override bool Equals(object obj)
+        public List<Community> GetAll()
         {
-            return base.Equals(obj);
+            throw new NotImplementedException();
         }
 
-        public override int GetHashCode()
+        public Community GetById(int id)
         {
-            return base.GetHashCode();
+            throw new NotImplementedException();
         }
 
-        public override string ToString()
+        public void Update(Community entity, int id)
         {
-            return base.ToString();
+            throw new NotImplementedException();
         }
     }
 }

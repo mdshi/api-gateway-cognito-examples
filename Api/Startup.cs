@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Api.UnitOfWork;
+using Api.UnitOfWork.commands;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,10 +28,11 @@ namespace Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<ICommunityRepository>(x => new CommunityRepository(Configuration.GetConnectionString("Default")));
-            services.AddTransient<IMedicalCenterRepository>(x => new MedicalCenterRepository(Configuration.GetConnectionString("Default")));
-            services.AddTransient<ITravelerRepository>(x => new TravelerRepository(Configuration.GetConnectionString("Default")));
+            services.AddTransient<IWorker, Worker>();
+            services.AddTransient<ICommandLine, CommandLine>();
+            services.AddTransient<ICommunityRepository, CommunityRepository>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,10 +45,9 @@ namespace Api
             else
             {
                 app.UseHsts();
-               // app.UseHttpsRedirection();
+                // app.UseHttpsRedirection();
             }
 
-            
 
             app.UseHttpsRedirection();
             app.UseMvc();

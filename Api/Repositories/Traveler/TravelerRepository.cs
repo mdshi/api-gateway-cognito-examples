@@ -4,84 +4,29 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
-using DataAccessLayer;
 
 namespace Api
 {
-    public class TravelerRepository : SqlRepository<Traveler>, ITravelerRepository
+    public class TravelerRepository : ITravelerRepository
     {
-        private const string delete = "DELETE FROM Travelers WHERE TravelerID = @TravelerID";
-
-        public TravelerRepository(string connectionString) : base(connectionString) { }
-
-        public override async void DeleteAsync(int TravelerID)
+        public void Create(Community entity)
         {
-            using (var conn = GetOpenConnection())
-            {
-                var sql = delete;
-                var parameters = new DynamicParameters();
-                parameters.Add("@TravelerID", TravelerID, System.Data.DbType.Int32);
-                await conn.QueryFirstOrDefaultAsync<Traveler>(sql, parameters);
-            }
+            throw new NotImplementedException();
         }
 
-        public override async Task<IEnumerable<Traveler>> GetAllAsync()
+        public void Delete(int id)
         {
-            using (var conn = GetOpenConnection())
-            {
-                var sql = "SELECT * FROM Travelers";
-                return await conn.QueryAsync<Traveler>(sql);
-            }
+            throw new NotImplementedException();
         }
 
-        public override async Task<Traveler> FindAsync(int id)
+        public List<Community> GetAll()
         {
-            using (var conn = GetOpenConnection())
-            {
-                var sql = "SELECT * FROM Travelers WHERE TravelerID = @TravelerID";
-                var parameters = new DynamicParameters();
-                parameters.Add("@TravelerID", id, System.Data.DbType.Int32);
-                return await conn.QueryFirstOrDefaultAsync<Traveler>(sql, parameters);
-            }
+            throw new NotImplementedException();
         }
 
-        public override async void InsertAsync(Traveler entity)
+        public Community GetById(int id)
         {
-            using (var conn = GetOpenConnection())
-            {
-                var sql = "INSERT INTO Travelers(FirstName)"
-                    + "VALUES(@FirstName)";
-
-                var parameters = new DynamicParameters();
-                parameters.Add("@FirstName", entity.FirstName, System.Data.DbType.String);
-
-                await conn.QueryAsync(sql, parameters);
-            }
-        }
-
-        public override async void UpdateAsync(Traveler entityToUpdate)
-        {
-            using (var conn = GetOpenConnection())
-            {
-                var existingEntity = await FindAsync(entityToUpdate.TravelerID);
-
-                var sql = "UPDATE Travelers "
-                    + "SET ";
-
-                var parameters = new DynamicParameters();
-                if (existingEntity.FirstName != entityToUpdate.FirstName)
-                {
-                    sql += "FirstName=@FirstFirstName,";
-                    parameters.Add("@FirstFirstName", entityToUpdate.FirstName, DbType.String);
-                }
-
-                sql = sql.TrimEnd(',');
-
-                sql += " WHERE Id=@Id";
-                parameters.Add("@Id", entityToUpdate.TravelerID, DbType.Int32);
-
-                await conn.QueryAsync(sql, parameters);
-            }
+            throw new NotImplementedException();
         }
 
         public Task<bool> MyCustomRepositoryMethodExampleAsync()
@@ -89,19 +34,9 @@ namespace Api
             throw new NotImplementedException();
         }
 
-        public override bool Equals(object obj)
+        public void Update(Community entity, int id)
         {
-            return base.Equals(obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
-        public override string ToString()
-        {
-            return base.ToString();
+            throw new NotImplementedException();
         }
     }
 }
