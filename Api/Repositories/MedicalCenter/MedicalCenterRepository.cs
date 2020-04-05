@@ -29,14 +29,10 @@ namespace Api
             throw new NotImplementedException();
         }
 
-        public Task<bool> MyCustomRepositoryMethodExampleAsync()
-        {
-            throw new NotImplementedException();
-        }
-
         public void Update(Community entity, int id)
         {
             throw new NotImplementedException();
         }
+
     }
 }

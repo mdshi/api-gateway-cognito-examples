@@ -15,7 +15,7 @@
         public string Kebele { get; set; }
         public string Occupation { get; set; }
         public string HouseNo { get; set; }
-        public int PhoneNo { get; set; }
+        public string PhoneNo { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
         public bool? Fever { get; set; }

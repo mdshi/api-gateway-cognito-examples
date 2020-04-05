@@ -22,5 +22,14 @@ namespace Api.UnitOfWork
                 return task(connection);
             }
         }
+
+        public int ExecuteCommand(string connectionStr, Func<SqlConnection, int> task)
+        {
+            using (var connection = new SqlConnection(connectionStr))
+            {
+                connection.Open();
+                return task(connection);
+            }
+        }
     }
 }

@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Api.UnitOfWork;
+using Api.UnitOfWork.commands;
 using Dapper;
+using Microsoft.Extensions.Configuration;
 
 namespace Api
 {
     public class TravelerRepository : ITravelerRepository
     {
+        private readonly IConfiguration _configuration;
+        private readonly string _connectionStr;
+        private readonly IWorker _worker;
+        private readonly ICommandLine _commandLine;
+
         public void Create(Community entity)
         {
             throw new NotImplementedException();
@@ -35,6 +43,11 @@ namespace Api
         }
 
         public void Update(Community entity, int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UpdateCommunity(Community entity)
         {
             throw new NotImplementedException();
         }
